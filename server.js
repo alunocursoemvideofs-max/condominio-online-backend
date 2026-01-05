@@ -4,53 +4,25 @@ const path = require("path");
 require("dotenv").config();
 
 const app = express();
-
-// =======================
-// MIDDLEWARES
-// =======================
 app.use(express.json());
 
-// =======================
-// MONGODB
-// =======================
+// Serve arquivos estáticos do frontend
+app.use(express.static(path.join(__dirname, "frontend")));
+
+// Conexão com MongoDB
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB conectado com sucesso!"))
-  .catch(err => console.error("Erro ao conectar no MongoDB:", err));
+  .catch(err => console.log("Erro ao conectar no MongoDB:", err));
 
-// =======================
-// ROTAS DA API
-// =======================
-app.use("/api/operadores", require("./routes/operadores"));
+// Rotas da API
+const operadoresRoutes = require("./routes/operadores");
+app.use("/api/operadores", operadoresRoutes);
 
-// =======================
-// FRONTEND
-// =======================
-
-// caminho absoluto do frontend
-const frontendPath = path.join(__dirname, "frontend");
-
-// arquivos estáticos (css, js, imagens)
-app.use(express.static(frontendPath));
-
-// rota principal → LOGIN
+// Rota raiz serve o login
 app.get("/", (req, res) => {
-  res.sendFile(path.join(frontendPath, "login", "index.html"));
+  res.sendFile(path.join(__dirname, "frontend", "login", "index.html"));
 });
 
-// dashboard
-app.get("/dashboard", (req, res) => {
-  res.sendFile(path.join(frontendPath, "dashboard", "index.html"));
-});
-
-// =======================
-// FALLBACK (evita Not Found)
-// =======================
-app.use((req, res) => {
-  res.status(404).send("Página não encontrada");
-});
-
-// =======================
+// Porta
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
-});
+app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));

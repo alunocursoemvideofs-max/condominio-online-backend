@@ -1,26 +1,30 @@
-const formLogin = document.getElementById("formLogin");
-const msg = document.getElementById("msg");
+const form = document.getElementById("loginForm");
 
-formLogin.addEventListener("submit", async e => {
-    e.preventDefault();
-    const usuario = document.getElementById("usuario").value;
-    const senha = document.getElementById("senha").value;
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
 
-    try {
-        const res = await fetch("http://127.0.0.1:3000/api/operadores/login", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ usuario, senha })
-        });
-        const data = await res.json();
-        msg.innerText = data.msg;
+  const usuario = document.getElementById("usuario").value;
+  const senha = document.getElementById("senha").value;
 
-        if (res.ok) {
-            sessionStorage.setItem("operador", JSON.stringify(data.operador));
-            window.location.href = "../dashboard/index.html";
-        }
-    } catch (err) {
-        msg.innerText = "Erro ao conectar ao servidor!";
-        console.error(err);
+  try {
+    const response = await fetch("/api/operadores/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ usuario, senha }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      alert("Login realizado com sucesso!");
+      window.location.href = "/dashboard/index.html";
+    } else {
+      alert(data.message || "Usuário ou senha inválidos!");
     }
+  } catch (error) {
+    console.error("Erro ao conectar ao servidor:", error);
+    alert("Erro ao conectar ao servidor!");
+  }
 });
