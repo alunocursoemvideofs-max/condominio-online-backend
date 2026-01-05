@@ -23,19 +23,30 @@ mongoose.connect(process.env.MONGO_URI)
 app.use("/api/operadores", require("./routes/operadores"));
 
 // =======================
-// SERVIR FRONTEND
+// FRONTEND
 // =======================
+
+// caminho absoluto do frontend
 const frontendPath = path.join(__dirname, "frontend");
+
+// arquivos estáticos (css, js, imagens)
 app.use(express.static(frontendPath));
 
-// LOGIN (rota principal)
+// rota principal → LOGIN
 app.get("/", (req, res) => {
   res.sendFile(path.join(frontendPath, "login", "index.html"));
 });
 
-// DASHBOARD
+// dashboard
 app.get("/dashboard", (req, res) => {
   res.sendFile(path.join(frontendPath, "dashboard", "index.html"));
+});
+
+// =======================
+// FALLBACK (evita Not Found)
+// =======================
+app.use((req, res) => {
+  res.status(404).send("Página não encontrada");
 });
 
 // =======================
