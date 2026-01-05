@@ -1,39 +1,46 @@
-// Importações
 const express = require("express");
 const mongoose = require("mongoose");
-const dotenv = require("dotenv");
 const cors = require("cors");
-const bodyParser = require("body-parser");
-
-// Configura variáveis de ambiente
-dotenv.config();
+require("dotenv").config();
 
 const app = express();
 
-// Middlewares
-app.use(cors({ origin: "*" })); // Permite requisições do frontend
-app.use(bodyParser.json()); // Permite receber JSON
+// ========================
+// MIDDLEWARES
+// ========================
+app.use(cors());
+app.use(express.json());
 
-// Importa rotas
-const operadoresRoutes = require("./routes/operadores");
-
-// Rotas
-app.use("/api/operadores", operadoresRoutes);
-
-// Rota de teste raiz
+// ========================
+// ROTA RAIZ (TESTE RENDER)
+// ========================
 app.get("/", (req, res) => {
-    res.send("Servidor rodando!");
+  res.send("🚀 API Condomínio Online está funcionando!");
 });
 
-// Conectar MongoDB Atlas (Mongoose 7+ não precisa de useNewUrlParser ou useUnifiedTopology)
-const mongoURI = process.env.MONGO_URI;
+// ========================
+// ROTAS
+// ========================
+const operadoresRoutes = require("./routes/operadores");
+app.use("/api/operadores", operadoresRoutes);
 
-mongoose.connect(mongoURI)
-    .then(() => console.log("MongoDB conectado com sucesso!"))
-    .catch(err => console.error("Erro ao conectar no MongoDB:", err));
+// ========================
+// CONEXÃO COM MONGODB
+// ========================
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => {
+    console.log("MongoDB conectado com sucesso!");
+  })
+  .catch((err) => {
+    console.error("Erro ao conectar no MongoDB:", err);
+  });
 
-// Porta do servidor
+// ========================
+// INICIAR SERVIDOR
+// ========================
 const PORT = process.env.PORT || 3000;
+
 app.listen(PORT, () => {
-    console.log(`Servidor rodando na porta ${PORT}`);
+  console.log(`Servidor rodando na porta ${PORT}`);
 });
