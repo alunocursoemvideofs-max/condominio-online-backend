@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard | Condomínio Online</title>
+
+<!-- Fonte Google -->
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="dashboard.css">
+<script src="dashboard.js" defer></script>
+</head>
+<body>
+<div class="container">
+    <div class="card">
+        <!-- Saudação -->
+        <h1>Bem-vindo, <span id="nomeOperador"></span>!</h1>
+        <button id="logoutBtn">Sair</button>
+
+        <!-- Pesquisa operadores -->
+        <h2>Operadores</h2>
+        <input type="text" id="pesquisa" placeholder="Pesquisar operador..." autocomplete="off">
+
+        <table id="tabelaOperadores">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Usuário</th>
+                    <th>Email</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Operadores serão listados via JS -->
+            </tbody>
+        </table>
+
+        <!-- Adicionar operador -->
+        <h2>Adicionar Operador</h2>
+        <form id="formAdicionar" autocomplete="off">
+            <input type="text" id="nome" placeholder="Nome" required autocomplete="off">
+            <input type="text" id="usuario" placeholder="Usuário" required autocomplete="off">
+            <input type="email" id="email" placeholder="Email" required autocomplete="off">
+            <input type="password" id="senha" placeholder="Senha" required autocomplete="new-password">
+            <button type="submit">Adicionar</button>
+        </form>
+
+        <p id="msg" class="msg"></p>
+    </div>
+</div>
+
+<!-- Modal de edição -->
+<div id="modal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Editar Operador</h2>
+        <form id="formEditar" autocomplete="off">
+            <input type="hidden" id="editId">
+            <input type="text" id="editNome" placeholder="Nome" required autocomplete="off">
+            <input type="text" id="editUsuario" placeholder="Usuário" required autocomplete="off">
+            <input type="email" id="editEmail" placeholder="Email" required autocomplete="off">
+            <input type="password" id="editSenha" placeholder="Nova Senha (opcional)" autocomplete="new-password">
+            <button type="submit">Salvar</button>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>
