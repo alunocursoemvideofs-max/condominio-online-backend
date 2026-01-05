@@ -19,7 +19,7 @@ form.addEventListener("submit", async (e) => {
 
     if (response.ok) {
       alert("Login realizado com sucesso!");
-      window.location.href = "/dashboard/index.html";
+      window.location.href = "/dashboard"; // redireciona para a rota dashboard
     } else {
       alert(data.message || "Usuário ou senha inválidos!");
     }

@@ -6,9 +6,6 @@ require("dotenv").config();
 const app = express();
 app.use(express.json());
 
-// Serve arquivos estáticos do frontend
-app.use(express.static(path.join(__dirname, "frontend")));
-
 // Conexão com MongoDB
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB conectado com sucesso!"))
@@ -18,9 +15,16 @@ mongoose.connect(process.env.MONGO_URI)
 const operadoresRoutes = require("./routes/operadores");
 app.use("/api/operadores", operadoresRoutes);
 
-// Rota raiz serve o login
+// Serve os arquivos estáticos do frontend (CSS, JS, imagens)
+app.use(express.static(path.join(__dirname, "frontend")));
+
+// Rotas para frontend
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "frontend", "login", "index.html"));
+});
+
+app.get("/dashboard", (req, res) => {
+  res.sendFile(path.join(__dirname, "frontend", "dashboard", "index.html"));
 });
 
 // Porta
